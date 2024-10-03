@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="529.76807"
+   height="253"
+   viewBox="0 0 529.76809 253.00001"
+   version="1.1"
+   id="svg1191"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="NL-A.svg">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     id="namedview1193"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1.9876623"
+     inkscape:cx="123.76348"
+     inkscape:cy="124.51814"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1188" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1848.7969,152.27722)">
+    <g
+       transform="matrix(3.874442,0,0,3.7795271,12001.014,8367.2335)"
+       id="g56835-8-0">
+      <rect
+         ry="8.8183937"
+         y="-2252.1333"
+         x="-2618.3167"
+         height="62.964531"
+         width="132.75897"
+         id="rect8305-4-5-0-2-1-4-8-8-3-4-6-7-4-6-1-1-0"
+         style="fill:none;fill-opacity:1;stroke:#2a292a;stroke-width:3.97505999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         ry="9.2247715"
+         y="-2252.3459"
+         x="-2618.5291"
+         height="63.389824"
+         width="133.18423"
+         id="rect8305-4-6-05-6-6-2-8-5-0-4-6-6-7-0-4-6"
+         style="fill:#cc0605;fill-opacity:1;stroke:#f7fbf5;stroke-width:2.75601006;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
