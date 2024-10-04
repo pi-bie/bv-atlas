@@ -18,6 +18,7 @@
       [population>499999] {
         marker-file: url('symbols/major-city.svg');
         marker-line-color: gray;
+        marker-line-width: 1;
         marker-fill: silver;
         [zoom=9] { marker-width: 1*@place-node-large-z9; }
         [zoom=8] { marker-width: 0.5*@place-node-large-z9; }

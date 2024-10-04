@@ -95,7 +95,7 @@
   marker-ignore-placement: true;
 }
 
-#camping[zoom>=11] {
+.camping[zoom>=11] {
   marker-width: 0.5*@campsite-marker-z12; 
   marker-fill: @nsg;
   marker-file: url('symbols/Camping.svg');

@@ -250,7 +250,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way,highway,tags->'scenic' AS scenic,ref,(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline\nFROM planet_osm_line WHERE highway='tertiary' OR (highway='unclassified' AND (ref IS NOT null OR Substring(tags->'maxspeed','\\d+')::integer >=50)) ORDER BY ref DESC) as paths",
+        "table": "(SELECT way,highway,tags->'scenic' AS scenic,ref,(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline\nFROM planet_osm_line WHERE highway='tertiary' OR (highway='unclassified' AND (access='yes' OR access IS null) AND (ref IS NOT null OR Substring(tags->'maxspeed','\\d+')::integer >=50)) ORDER BY ref DESC) as paths",
         "key_field": "",
         "geometry_field": "way",
         "extent_cache": "auto",
@@ -282,7 +282,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT ST_LineMerge(ST_Union(way)) AS way,highway,railway,construction,tags->'proposed' as proposed,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    ELSE char_length(substring(ref,'\\d+'))\nEND) AS lref\n from planet_osm_line where\n  highway in ('construction','proposed') AND (construction in ('motorway','trunk','primary') OR tags->'proposed' in ('motorway','trunk','primary'))\nGROUP BY highway,railway,construction,proposed,ref,reftype,refnumber,lref) as line",
+        "table": "(SELECT way,highway,railway,construction,tags->'proposed' as proposed,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    ELSE char_length(substring(ref,'\\d+'))\nEND) AS lref\n from planet_osm_line where\n  highway in ('construction','proposed') AND (construction in ('motorway','trunk','primary') OR tags->'proposed' in ('motorway','trunk','primary'))) as line",
         "key_field": "",
         "geometry_field": "way",
         "extent_cache": "auto",
@@ -302,7 +302,7 @@
       "layerId": "future-roads"
     },
     {
-      "geometry": "point",
+      "geometry": "polygon",
       "extent": [
         -4.0388503,
         50.921290199263275,
@@ -311,7 +311,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way FROM planet_osm_point WHERE tourism ='camp_site' AND (tags->'fee'='yes' OR tags->'camp_site' IN ('serviced', 'deluxe') OR tags->'caravan' = 'yes' OR tags->'shower'='yes') AND (tags->'permanent_camping' IS null OR tags->'permanent_camping' != 'only')\nUNION\nSELECT ST_Centroid(way) AS way FROM planet_osm_polygon WHERE tourism='camp_site' AND (tags->'fee'='yes' OR tags->'camp_site' IN ('serviced', 'deluxe') OR tags->'caravan' = 'yes' OR tags->'shower'='yes') AND (tags->'permanent_camping' IS null OR tags->'permanent_camping' != 'only') ) as point",
+        "table": "(SELECT way FROM planet_osm_polygon WHERE tourism='camp_site' AND (tags->'fee'='yes' OR tags->'camp_site' IN ('serviced', 'deluxe') OR tags->'caravan' = 'yes' OR tags->'shower'='yes') AND (tags->'permanent_camping' IS null OR tags->'permanent_camping' != 'only') ) AS area",
         "key_field": "",
         "geometry_field": "",
         "extent_cache": "auto",
@@ -322,13 +322,45 @@
         "id": "camping",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
-      "id": "camping",
-      "class": "",
+      "id": "camping_polygon",
+      "class": "camping",
       "srs-name": "900913",
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
-      "name": "camping",
-      "layerId": "camping"
+      "name": "camping_polygon",
+      "layerId": "camping_polygon",
+      "properties": {
+        "minzoom": 11
+      }
+    },
+    {
+      "geometry": "point",
+      "extent": [
+        1.4042559999999997,
+        50.9425607992595,
+        11.8153741,
+        59.20667170135131
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT way FROM planet_osm_point WHERE tourism ='camp_site' AND (tags->'fee'='yes' OR tags->'camp_site' IN ('serviced', 'deluxe') OR tags->'caravan' = 'yes' OR tags->'shower'='yes') AND (tags->'permanent_camping' IS null OR tags->'permanent_camping' != 'only') ) AS node",
+        "key_field": "",
+        "geometry_field": "",
+        "extent_cache": "auto",
+        "extent": "156321.06286339916,6611139.675470055,1315281.428344033,8225191.288640352",
+        "dbname": "gis",
+        "port": "5432"
+      },
+      "id": "camping_point",
+      "class": "camping",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "camping_point",
+      "layerId": "camping_point",
+      "properties": {
+        "minzoom": 11
+      }
     },
     {
       "geometry": "linestring",
@@ -442,7 +474,6 @@
         "extent": "240804.0626983463,6627966.207276009,1294593.1462580664,7262581.3630927885",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
         "id": "main-roads",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
@@ -836,6 +867,34 @@
       "layerId": "roads_shields"
     },
     {
+      "geometry": "polygon",
+      "extent": [
+        1.4042559999999997,
+        50.9425607992595,
+        11.8153741,
+        59.20667170135131
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT way,COALESCE(place,\"natural\") AS feature,COALESCE(tags->'name:de',name) AS name,0 AS width FROM planet_osm_polygon WHERE (\"natural\" IN ('bay') AND way_area > 1e+07) OR place IN ('ocean','sea')) as area",
+        "key_field": "",
+        "geometry_field": "",
+        "extent_cache": "auto",
+        "extent": "156321.06286339916,6611139.675470055,1315281.428344033,8225191.288640352",
+        "dbname": "gis",
+        "port": "5432",
+        "id": "sea_name_polygon",
+        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+      },
+      "id": "sea_name_polygon",
+      "class": "water_names",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "sea_name_polygon",
+      "layerId": "sea_name_polygon"
+    },
+    {
       "geometry": "point",
       "extent": [
         1.4042559999999997,
@@ -845,24 +904,23 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT ST_Centroid(way) AS way,COALESCE(place,\"natural\") AS feature,COALESCE(tags->'name:de',name) AS name,0 AS width FROM planet_osm_polygon WHERE (\"natural\" IN ('bay') AND way_area > 1e+07) OR place IN ('ocean','sea') \nUNION\nSELECT way,COALESCE(place,\"natural\") AS feature, COALESCE(tags->'name:de',name) AS name, 0 AS width from planet_osm_point WHERE place IN ('ocean','sea')) as node ",
+        "table": "(SELECT way,COALESCE(place,\"natural\") AS feature, COALESCE(tags->'name:de',name) AS name, 0 AS width from planet_osm_point WHERE place IN ('ocean','sea')) as node",
         "key_field": "",
         "geometry_field": "",
         "extent_cache": "auto",
         "extent": "156321.06286339916,6611139.675470055,1315281.428344033,8225191.288640352",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
-        "id": "sea",
+        "id": "sea_name_point",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
-      "id": "sea_name",
+      "id": "sea_name_point",
       "class": "water_names",
       "srs-name": "900913",
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
-      "name": "sea_name",
-      "layerId": "sea_name"
+      "name": "sea_name_point",
+      "layerId": "sea_name_point"
     },
     {
       "geometry": "polygon",
