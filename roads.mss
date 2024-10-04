@@ -185,7 +185,7 @@
         [tunnel='yes'] { line-dasharray: 0.5*14, 0.5*8.5; }
       }
       [zoom>=12] {
-        line-width: 0.67*1*@railway-width-z12; 
+        line-width: 0.67*1*@railway-width-z12;
         [tunnel='yes'] { line-dasharray: 1*14, 1*8.5; }
       }
       [usage='main'] {
@@ -373,7 +373,44 @@
   ::foot,::car { comp-op: darken; }
 } }
 
-#route-roads[network='BAB'] {
+#route-roads[network = 'e-road']::Eshield {
+  shield-file: url('shields/E-Road_2x1.svg');
+  [lref>=3] { shield-file: url('shields/E-Road_3x1.svg'); }
+  shield-name: [ref];
+  shield-face-name: 'DIN 1451 Mittelschrift Regular';
+  shield-fill: white;
+  shield-size: 0.9*0.25*@E-shield-z12;
+  shield-transform: scale(0.25*@E-shield-z12/375);
+  shield-placement: line;
+  shield-repeat-distance: 768;
+  //shield-spacing : 256;
+  //[zoom<10] { shield-spacing : 512px; }
+  [zoom>=12] {
+    shield-size: 0.9*1*@E-shield-z12;
+    shield-transform: scale(1*@E-shield-z12/375);
+  }
+  [zoom=11] {
+    shield-size: 0.9*0.5*@E-shield-z12;
+    shield-transform: scale(0.5*@E-shield-z12/375);
+  }
+  [zoom=9] {
+    shield-size: 0.9*1*@E-shield-z9;
+    shield-transform: scale(1*@E-shield-z9/375);
+  }
+  [zoom=8] {
+    shield-size: 0.9*0.5*@E-shield-z9;
+    shield-transform: scale(0.5*@E-shield-z9/375);
+  }
+  [zoom<=7] {
+    shield-size: 0.9*0.25*@E-shield-z9;
+    shield-transform: scale(0.25*@E-shield-z9/375);
+  }
+  shield-wrap-character: ";";
+  shield-wrap-width: 2; // effectively break after every wrap character
+  shield-line-spacing: -1.5; // -0.15 em
+}
+
+#route-roads[network='BAB']::ashield {
   //shield-avoid-edges: true;
   shield-file: url('shields/Bundesautobahn.svg');
   shield-name: [refnumber];
@@ -388,7 +425,7 @@
     shield-size: 0.6*1*@A-shield-z12;
   }
   [zoom=11] {
-    shield-transform: scale(0.5*@A-shield-z12/60); 
+    shield-transform: scale(0.5*@A-shield-z12/60);
     shield-size: 0.6*0.5*@A-shield-z12;
   }
   [zoom=9] {
@@ -408,7 +445,7 @@
   //shield-line-spacing: -1.5; // -0.15 em
 }
 
-#route-roads [zoom>=10][network='DE:B'] {
+#route-roads [zoom>=10][network='DE:B']::bshield {
   //shield-avoid-edges: true;
   shield-file: url('shields/Bundesstraße.svg');
   shield-name: [refnumber];
@@ -424,7 +461,7 @@
     shield-size: 0.6*1*@B-shield-z12;
   }
   [zoom=11] {
-    shield-transform: scale(0.5*@B-shield-z12/60); 
+    shield-transform: scale(0.5*@B-shield-z12/60);
     shield-size: 0.6*0.5*@B-shield-z12;
   }
   [zoom<=9] {
@@ -436,7 +473,7 @@
   //shield-line-spacing: -1.5; // -0.15 em
 }
 
-#route-roads[network='NL:A'] {
+#route-roads[network='NL:A']::ashield {
   shield-file: url('shields/NL-A.svg');
   shield-name: [ref];
   shield-face-name: 'Highway Gothic Regular';
@@ -450,7 +487,7 @@
     shield-size: 0.55*1*@A-shield-z12;
   }
   [zoom=11] {
-    shield-transform: scale(0.5*@A-shield-z12/253); 
+    shield-transform: scale(0.5*@A-shield-z12/253);
     shield-size: 0.55*0.5*@A-shield-z12;
   }
   [zoom=9] {
@@ -470,7 +507,7 @@
   shield-line-spacing: -1.5; // -0.15 em
 }
 
-#route-roads [zoom>=10][network='NL:N'] {
+#route-roads [zoom>=10][network='NL:N']::bshield {
   shield-file: url('shields/NL-N.svg');
   [lref=3] { shield-file: url('shields/NL-N_3.svg'); }
   shield-name: [ref];
@@ -486,7 +523,7 @@
     shield-size: 0.6*1*@B-shield-z12;
   }
   [zoom=11] {
-    shield-transform: scale(0.5*@B-shield-z12/80); 
+    shield-transform: scale(0.5*@B-shield-z12/80);
     shield-size: 0.6*0.5*@B-shield-z12;
   }
   [zoom=9] {
@@ -506,9 +543,9 @@
   shield-line-spacing: -1.5; // -0.15 em
 }
 
-#route-roads[operator!='Bundesrepublik Deutschland'] {
+#route-roads[network!='e-road'][network!='BAB'][network!='DE:B'][network!='NL:A'][network!='NL:N'] {
   //debug-mode: collision;
-  ::shield[reftype='A'] {
+  [reftype='A']::ashield {
     //shield-avoid-edges: true;
     shield-file: url('shields/aroad.svg');
     shield-name: [ref];
@@ -523,7 +560,7 @@
       shield-size: 0.85*1*@A-shield-z12;
     }
     [zoom=11] {
-      shield-transform: scale(0.5*@A-shield-z12/60); 
+      shield-transform: scale(0.5*@A-shield-z12/60);
       shield-size: 0.85*0.5*@A-shield-z12;
     }
     [zoom=9] {
@@ -542,7 +579,7 @@
     shield-wrap-width: 2; // effectively break after every wrap character
     shield-line-spacing: -1.5; // -0.15 em
   }
-  ::bshield[reftype!='A'] { [reftype='N'], [reftype='D'] {
+  [reftype!='A']::bshield { [reftype='N'], [reftype='D'] {
     [zoom>=10] { //,[zoom>=9][highway='motorway'],[zoom>=9][highway='trunk'] {
       //shield-avoid-edges: true;
       shield-file: url('shields/broad.svg');
@@ -558,7 +595,7 @@
         shield-size: 0.85*1*@B-shield-z12;
       }
       [zoom=11] {
-        shield-transform: scale(0.5*@B-shield-z12/60); 
+        shield-transform: scale(0.5*@B-shield-z12/60);
         shield-size: 0.85*0.5*@B-shield-z12;
       }
       [zoom<=9] {
@@ -570,49 +607,48 @@
       shield-line-spacing: -1.5; // -0.15 em
     }
   } }
-  ::Eshield[network = 'e-road'] {
-    shield-file: url('shields/E-Road_2x1.svg');
-    shield-name: [ref];
-    shield-face-name: 'DIN 1451 Mittelschrift Regular';
-    shield-fill: white;
-    shield-size: 0.9*0.25*@E-shield-z12;
-    shield-transform: scale(0.25*@E-shield-z12/375);
-    shield-placement: line;
-    shield-repeat-distance: 768;
-    //shield-spacing : 256;
-    //[zoom<10] { shield-spacing : 512px; }
-    [zoom>=12] {
-      shield-size: 0.9*1*@E-shield-z12;
-      shield-transform: scale(1*@E-shield-z12/375);
-    }
-    [zoom=11] {
-      shield-size: 0.9*0.5*@E-shield-z12;
-      shield-transform: scale(0.5*@E-shield-z12/375);
-    }
-    [zoom=9] {
-      shield-size: 0.9*1*@E-shield-z9;
-      shield-transform: scale(1*@E-shield-z9/375);
-    }
-    [zoom=8] {
-      shield-size: 0.9*0.5*@E-shield-z9;
-      shield-transform: scale(0.5*@E-shield-z9/375);
-    }
-    [zoom<=7] {
-      shield-size: 0.9*0.25*@E-shield-z9;
-      shield-transform: scale(0.25*@E-shield-z9/375);
-    }
-    shield-wrap-character: ";";
-    shield-wrap-width: 2; // effectively break after every wrap character
-    shield-line-spacing: -1.5; // -0.15 em
-  }
 }
 
 #roads_shields {
+  ::ashield[reftype='A'] {
+    shield-file: url('shields/Bundesautobahn.svg');
+    shield-name: [refnumber];
+    shield-face-name: 'DIN 1451 Mittelschrift Regular';
+    shield-fill: silver;
+    shield-size: 0.6*0.25*@A-shield-z12;
+    shield-transform: scale(0.25*@A-shield-z12/60);
+    shield-placement: line;
+    shield-repeat-distance: 768;
+    [zoom>=12] {
+      shield-transform: scale(@A-shield-z12/60);
+      shield-size: 0.6*1*@A-shield-z12;
+    }
+    [zoom=11] {
+      shield-transform: scale(0.5*@A-shield-z12/60);
+      shield-size: 0.6*0.5*@A-shield-z12;
+    }
+    [zoom=9] {
+      shield-transform: scale(@A-shield-z9/60);
+      shield-size: 0.6*1*@A-shield-z9;
+    }
+    [zoom=8] {
+      shield-transform: scale(0.5*@A-shield-z9/60);
+      shield-size: 0.6*0.5*@A-shield-z9;
+    }
+    [zoom<=7] {
+      shield-transform: scale(0.25*@A-shield-z9/60);
+      shield-size: 0.6*0.25*@A-shield-z9;
+    }
+    shield-wrap-character: ";";
+    shield-wrap-width: 2; // effectively break after every wrap character
+    //shield-line-spacing: -1.5; // -0.15 em
+  }
   ::Eshield[intref != null] {
+    //debug-mode: collision;
     shield-file: url('shields/E-Road_2x1.svg');
     shield-name: [intref];
     shield-face-name: 'DIN 1451 Mittelschrift Regular';
-    shield-fill: white;
+    shield-fill: silver;
     shield-size: 0.9*0.25*@E-shield-z12;
     shield-transform: scale(0.25*@E-shield-z12/375);
     shield-placement: line;
@@ -645,5 +681,3 @@
     shield-line-spacing: -1.5; // -0.15 em
   }
 }
-
-

@@ -270,36 +270,8 @@
       "layerId": "small-roads",
       "properties": {
         "minzoom": 11
-      }
-    },
-    {
-      "geometry": "linestring",
-      "extent": [
-        -4.0388503,
-        50.9425607992595,
-        12.039244699999998,
-        62.51465530131363
-      ],
-      "Datasource": {
-        "type": "postgis",
-        "table": "(SELECT way,highway,railway,construction,tags->'proposed' as proposed,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    ELSE char_length(substring(ref,'\\d+'))\nEND) AS lref\n from planet_osm_line where\n  highway in ('construction','proposed') AND (construction in ('motorway','trunk','primary') OR tags->'proposed' in ('motorway','trunk','primary'))) as line",
-        "key_field": "",
-        "geometry_field": "way",
-        "extent_cache": "auto",
-        "extent": "-449602.7587862602,6611139.675470055,1340202.5895396175,8982220.323750606",
-        "dbname": "gis",
-        "port": "5432",
-        "user": "renderaccount",
-        "id": "future-roads",
-        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
-      "id": "future-roads",
-      "class": "",
-      "srs-name": "900913",
-      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
-      "advanced": {},
-      "name": "future-roads",
-      "layerId": "future-roads"
+      "status": "off"
     },
     {
       "geometry": "polygon",
@@ -331,7 +303,8 @@
       "layerId": "camping_polygon",
       "properties": {
         "minzoom": 11
-      }
+      },
+      "status": "off"
     },
     {
       "geometry": "point",
@@ -360,7 +333,8 @@
       "layerId": "camping_point",
       "properties": {
         "minzoom": 11
-      }
+      },
+      "status": "off"
     },
     {
       "geometry": "linestring",
@@ -390,6 +364,35 @@
       "advanced": {},
       "name": "ferries",
       "layerId": "ferries"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -4.0388503,
+        50.9425607992595,
+        12.039244699999998,
+        62.51465530131363
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT way,highway,railway,construction,tags->'proposed' as proposed,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    ELSE char_length(substring(ref,'\\d+'))\nEND) AS lref\n from planet_osm_line where\n  highway in ('construction','proposed') AND (construction in ('motorway','trunk','primary') OR tags->'proposed' in ('motorway','trunk','primary'))) as line",
+        "key_field": "",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "-449602.7587862602,6611139.675470055,1340202.5895396175,8982220.323750606",
+        "dbname": "gis",
+        "port": "5432",
+        "user": "renderaccount",
+        "id": "future-roads",
+        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+      },
+      "id": "future-roads",
+      "class": "",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "future-roads",
+      "layerId": "future-roads"
     },
     {
       "geometry": "linestring",
@@ -665,7 +668,8 @@
       "layerId": "junctions",
       "properties": {
         "minzoom": 10
-      }
+      },
+      "status": "off"
     },
     {
       "geometry": "point",
@@ -694,7 +698,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "services",
-      "layerId": "services"
+      "layerId": "services",
+      "status": "off"
     },
     {
       "geometry": "point",
@@ -818,14 +823,13 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way,highway,name,tourism,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    \tWHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    \tELSE char_length(substring(ref,'\\d+'))\nEND) AS lref,\nSubstring(tags->'int_ref', 'E \\d+') as intref, Length(Substring(tags->'int_ref', '\\d+')) as lintref,route,\n(CASE\nWHEN (SUBSTRING(ref, 1, 1) = 'B' AND tags->'operator' = 'Bundesrepublik Deutschland') THEN 'DE:B'\nELSE tags->'network'\nEND) AS network,COALESCE(tags->'owner',tags->'operator') AS operator,tags->'road' AS road,tags->'state' as state, construction,tags->'proposed' as proposed from planet_osm_line\n\tWHERE route='road' AND (ref IS NOT null OR tourism IS NOT null) AND (highway IS null OR highway in ('motorway','trunk','primary'))\n\tORDER BY z_order ASC, ref DESC) as paths",
+        "table": "(SELECT way,highway,name,tourism,ref,SUBSTRING(ref, 1, 1) as reftype, substring(ref,'\\d+') as refnumber,\n(CASE\n    \tWHEN (tags->'major_throughfare' IS NOT NULL) THEN 1\n    \tELSE char_length(substring(ref,'\\d+'))\nEND) AS lref,\nSubstring(tags->'int_ref', 'E \\d+') as intref, Length(Substring(tags->'int_ref', '\\d+')) as lintref,route,\n(CASE\nWHEN (tags->'operator' = 'Autobahn GmbH') THEN 'BAB'\nWHEN (SUBSTRING(ref, 1, 1) = 'B' AND tags->'operator' = 'Bundesrepublik Deutschland') THEN 'DE:B'\nELSE tags->'network'\nEND) AS network,COALESCE(tags->'owner',tags->'operator') AS operator,tags->'road' AS road,tags->'state' as state, construction,tags->'proposed' as proposed from planet_osm_line\n\tWHERE route='road' AND (ref IS NOT null OR tourism IS NOT null) AND (highway IS null OR highway in ('motorway','trunk','primary'))\n\tORDER BY z_order ASC, ref DESC) as paths",
         "key_field": "",
         "geometry_field": "",
         "extent_cache": "auto",
         "extent": "-449602.7587862602,6611139.675470055,1340202.5895396175,8982220.323750606",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
         "id": "route-roads",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
@@ -892,7 +896,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "sea_name_polygon",
-      "layerId": "sea_name_polygon"
+      "layerId": "sea_name_polygon",
+      "status": "off"
     },
     {
       "geometry": "point",
@@ -920,7 +925,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "sea_name_point",
-      "layerId": "sea_name_point"
+      "layerId": "sea_name_point",
+      "status": "off"
     },
     {
       "geometry": "polygon",
@@ -949,7 +955,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "water_areas_name",
-      "layerId": "water_areas_name"
+      "layerId": "water_areas_name",
+      "status": "off"
     },
     {
       "geometry": "linestring",
@@ -978,7 +985,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "water_ways_name",
-      "layerId": "water_ways_name"
+      "layerId": "water_ways_name",
+      "status": "off"
     },
     {
       "geometry": "linestring",
@@ -1007,7 +1015,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "mountains-landscapes",
-      "layerId": "mountains-landscapes"
+      "layerId": "mountains-landscapes",
+      "status": "off"
     },
     {
       "geometry": "linestring",
@@ -1036,7 +1045,8 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "long_ridges",
-      "layerId": "long_ridges"
+      "layerId": "long_ridges",
+      "status": "off"
     },
     {
       "geometry": "linestring",
@@ -1068,7 +1078,8 @@
       "layerId": "detours",
       "properties": {
         "minzoom": 11
-      }
+      },
+      "status": "off"
     }
   ],
   "scale": 1,

@@ -86,10 +86,10 @@
       [proposed='motorway'] { line-dasharray: 22.75, 17; }
     }
     [zoom>=12]::stroke {
-      background/line-width: 2*1*@motorway-stroke-z12;
+      background/line-width: 3*1*@motorway-stroke-z12;
       line-width: 1*@motorway-stroke-z12;
       [proposed='motorway'] {
-        background/line-width: 2*1*@motorway-planned-stroke-z12;
+        background/line-width: 3*1*@motorway-planned-stroke-z12;
         line-width: 1*@motorway-planned-stroke-z12;
       }
       [construction='motorway'] { line-dasharray: 45.5, 11.4; }
