@@ -17,7 +17,7 @@ $$
     select ST_Azimuth(ST_Centroid($1),ST_ClosestPoint(way, ST_Centroid($1))) as angle
     from planet_osm_line
     where way && ST_Expand($1, 500)
-        and highway in ('motorway')
+        and highway in ('motorway','trunk')
     order by ST_Distance(ST_Centroid(way), ST_Centroid($1)) asc
     limit 1
 $$
@@ -30,7 +30,7 @@ $$
     select ST_Distance(way, $1) AS distance
     from planet_osm_line
     where way && ST_Expand($1, 500)
-        and highway in ('motorway')
+        and highway in ('motorway','trunk')
     order by ST_Distance(way, $1) asc
     limit 1
 $$

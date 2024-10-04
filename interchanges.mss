@@ -16,7 +16,7 @@
   }
 }
 
-#services[zoom>=10] {
+#services[zoom>=10] { [fuel>0],[atmwy='yes'],[name=~'Autohof'] {
   ::service {
     marker-file: url('symbols/raststaette.svg');
     marker-height: 0.25*@services-height-z12;
@@ -118,7 +118,7 @@
       }
     }
   }
-}
+} }
 
 #junctions [zoom>=10] {
     ::node[zoom>=10] {

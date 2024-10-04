@@ -270,8 +270,7 @@
       "layerId": "small-roads",
       "properties": {
         "minzoom": 11
-      },
-      "status": "off"
+      }
     },
     {
       "geometry": "polygon",
@@ -303,8 +302,7 @@
       "layerId": "camping_polygon",
       "properties": {
         "minzoom": 11
-      },
-      "status": "off"
+      }
     },
     {
       "geometry": "point",
@@ -333,8 +331,7 @@
       "layerId": "camping_point",
       "properties": {
         "minzoom": 11
-      },
-      "status": "off"
+      }
     },
     {
       "geometry": "linestring",
@@ -668,8 +665,7 @@
       "layerId": "junctions",
       "properties": {
         "minzoom": 10
-      },
-      "status": "off"
+      }
     },
     {
       "geometry": "point",
@@ -681,7 +677,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(select ST_Centroid(way) AS way,amenity,highway,name,(SELECT COUNT(*) FROM planet_osm_point needle WHERE amenity='fuel' AND ST_Contains(haystack.way, needle.way)) + (SELECT COUNT(*) FROM planet_osm_polygon needle WHERE amenity = 'fuel' AND ST_Contains(haystack.way, needle.way)) AS fuel,(SELECT COUNT(*) FROM planet_osm_point needle WHERE tourism IN ('hotel','motel') AND ST_Contains(haystack.way, needle.way)) + (SELECT COUNT(*) FROM planet_osm_polygon needle WHERE tourism IN ('hotel','motel') AND ST_Contains(haystack.way, needle.way)) AS motel,Degrees(mwy_ldir(way)) as hwdir,sin(mwy_ldir(way)+pi()/2) as dirsin,cos(mwy_ldir(way)+pi()/2) as dircos FROM planet_osm_polygon haystack WHERE highway='services' AND way_area>4999) AS node",
+        "table": "(select ST_Centroid(way) AS way,amenity,highway,name,(CASE WHEN COALESCE(tags->'atmotorway',tags->'atmotorroad') IS NOT NULL THEN COALESCE(tags->'atmotorway',tags->'atmotorroad') \nWHEN mwy_dist(way) < 100 THEN 'yes' END) AS atmwy,(SELECT COUNT(*) FROM planet_osm_point needle WHERE amenity='fuel' AND ST_Contains(haystack.way, needle.way)) + (SELECT COUNT(*) FROM planet_osm_polygon needle WHERE amenity = 'fuel' AND ST_Contains(haystack.way, needle.way)) AS fuel,(SELECT COUNT(*) FROM planet_osm_point needle WHERE tourism IN ('hotel','motel') AND ST_Contains(haystack.way, needle.way)) + (SELECT COUNT(*) FROM planet_osm_polygon needle WHERE tourism IN ('hotel','motel') AND ST_Contains(haystack.way, needle.way)) AS motel,Degrees(mwy_ldir(way)) as hwdir,sin(mwy_ldir(way)+pi()/2) as dirsin,cos(mwy_ldir(way)+pi()/2) as dircos FROM planet_osm_polygon haystack WHERE highway='services' AND way_area>4999) AS node",
         "key_field": "",
         "geometry_field": "way",
         "extent_cache": "auto",
@@ -698,8 +694,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "services",
-      "layerId": "services",
-      "status": "off"
+      "layerId": "services"
     },
     {
       "geometry": "point",
@@ -896,8 +891,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "sea_name_polygon",
-      "layerId": "sea_name_polygon",
-      "status": "off"
+      "layerId": "sea_name_polygon"
     },
     {
       "geometry": "point",
@@ -925,8 +919,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "sea_name_point",
-      "layerId": "sea_name_point",
-      "status": "off"
+      "layerId": "sea_name_point"
     },
     {
       "geometry": "polygon",
@@ -955,8 +948,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "water_areas_name",
-      "layerId": "water_areas_name",
-      "status": "off"
+      "layerId": "water_areas_name"
     },
     {
       "geometry": "linestring",
@@ -985,8 +977,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "water_ways_name",
-      "layerId": "water_ways_name",
-      "status": "off"
+      "layerId": "water_ways_name"
     },
     {
       "geometry": "linestring",
@@ -1015,8 +1006,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "mountains-landscapes",
-      "layerId": "mountains-landscapes",
-      "status": "off"
+      "layerId": "mountains-landscapes"
     },
     {
       "geometry": "linestring",
@@ -1045,8 +1035,7 @@
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
       "name": "long_ridges",
-      "layerId": "long_ridges",
-      "status": "off"
+      "layerId": "long_ridges"
     },
     {
       "geometry": "linestring",
@@ -1078,8 +1067,7 @@
       "layerId": "detours",
       "properties": {
         "minzoom": 11
-      },
-      "status": "off"
+      }
     }
   ],
   "scale": 1,
