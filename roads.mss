@@ -1,26 +1,50 @@
 #main-roads {
   [zoom>=10][tunnel='yes'][prevtunnels=0]::tunnel-portal {
       [highway='motorway'],[highway='trunk'],[railway='rail'] {
+      /*debug/marker-placement: vertex-first;
+      debug/marker-allow-overlap: true;
+      debug/marker-width: 40;
+      debug/marker-height: 40;
+      debug/marker-allow-overlap: true;*/
       in/marker-file: url('symbols/tunnelportal.svg');
       in/marker-transform: 'scale(0.025) translate(-85,0) rotate(90)';
       [zoom=11] { in/marker-transform: 'scale(0.05) translate(-85,0) rotate(90)'; }
       [zoom>=12] { in/marker-transform: 'scale(0.1) translate(-85,0) rotate(90)'; }
       in/marker-placement: vertex-first;
+      in/marker-allow-overlap: true;
+      in/marker-ignore-placement: true;
       in/marker-line-color: black;
       [railway='rail'] {
         in/marker-transform: 'scale(0.0125) translate(-85,0) rotate(90)';
-        [zoom=11] { in/marker-transform: 'scale(0.025) translate(-85,0) rotate(90) '; }
+        [zoom=11] { in/marker-transform: 'scale(0.025) translate(-85,0) rotate(90)'; }
         [zoom>=12] { in/marker-transform: 'scale(0.05) translate(-85,0) rotate(90)'; }
       }
       [highway='trunk'] { in/marker-line-color: @fernrot; }
       [highway='motorway'][reftype='A'] { in/marker-line-color: @autobahn; }
-      in/marker-allow-overlap: true;
-      in/marker-ignore-placement: true;
-      /*out/marker-placement: vertex-first;
+    }
+  }
+  [zoom>=10][tunnel='yes'][nexttunnels=0]::tunnel-portal {
+      [railway='rail'] {
+      /*debug/marker-placement: vertex-last;
+      debug/marker-allow-overlap: true;
+      debug/marker-width: 40;
+      debug/marker-height: 40;
+      debug/marker-allow-overlap: true;*/
+      out/marker-file: url('symbols/tunnelportal.svg');
+      out/marker-transform: 'scale(0.025) rotate(-90)';
+      [zoom=11] { out/marker-transform: 'scale(0.05) rotate(-90)'; }
+      [zoom>=12] { out/marker-transform: 'scale(0.1) rotate(-90)'; }
+      out/marker-placement: vertex-last;
       out/marker-allow-overlap: true;
-      out/marker-width: 40;
-      out/marker-height: 40;
-      out/marker-allow-overlap: true;*/
+      out/marker-ignore-placement: true;
+      out/marker-line-color: black;
+      [railway='rail'] {
+        out/marker-transform: 'scale(0.0125) rotate(-90)';
+        [zoom=11] { out/marker-transform: 'scale(0.025) rotate(-90)'; }
+        [zoom>=12] { out/marker-transform: 'scale(0.05) rotate(-90)'; }
+      }
+      [highway='trunk'] { in/marker-line-color: @fernrot; }
+      [highway='motorway'][reftype='A'] { in/marker-line-color: @autobahn; }
     }
   }
   ::casing {
