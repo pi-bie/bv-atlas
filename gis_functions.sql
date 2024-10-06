@@ -142,6 +142,20 @@ $$
 language 'sql'
 stable;
 
+create or replace function closest_place_dir(geometry,text[])
+    returns double precision as
+$$
+    select degrees(st_azimuth(way, $1)) as angle
+    from planet_osm_point
+    where way && st_expand($1, 10000)
+    	and NOT(way && st_expand($1, 500))
+        and place = ANY($2)
+    order by st_distance(way, $1) asc
+    limit 1
+$$
+language 'sql'
+stable;
+
 create or replace function closest_place(geometry, name)
     returns text as
 $$

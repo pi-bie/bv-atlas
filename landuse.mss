@@ -54,7 +54,7 @@
 
 #mountains-landscapes [zoom>=10][name != null] {
   text-name: [name];
-  text-face-name: 'Helvetica Neue Thin';
+  text-face-name: 'Helvetica Neue Light';
   text-fill: black;
   text-placement: line;
   text-size: 0.25*@mountain-ridge-label-z12;
@@ -81,10 +81,14 @@
   text-fill: black;
   text-placement: line;
   text-size: 0.8*0.25*@mountain-ridge-label-z12;
+  text-horizontal-alignment: adjust;
+  text-wrap-width: 96;
+  text-line-spacing: 2*0.25*@mountain-ridge-label-z12;
+  text-margin: 0;
+  text-min-path-length: 0;
+  text-allow-overlap: true;
   [zoom=11] { text-size: 0.8*0.5*@mountain-ridge-label-z12; }
   [zoom>=12] { text-size: 0.8*1*@mountain-ridge-label-z12; }
-  text-horizontal-alignment: adjust;
-  //text-character-spacing: 0.8*@mountain-ridge-char-spacing-z12;
 }
 
 #peaks {
@@ -101,3 +105,4 @@
   marker-file: url('symbols/Camping.svg');
   [zoom=12] { marker-width: 1*@campsite-marker-z12; }
 }
+

@@ -107,6 +107,7 @@
     [highway='motorway_link'][zoom>=11] {
       line-width: 0.5*7;
       line-color: @autobahn;
+      [reftype='B'] { line-color: @fernrot; }
       [zoom=12] { line-width: 7; }
     }
     [highway='motorway'][reftype='B'] {
@@ -681,3 +682,4 @@
     shield-line-spacing: -1.5; // -0.15 em
   }
 }
+

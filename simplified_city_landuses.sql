@@ -15,7 +15,7 @@ FROM
 WHERE
 	bound.tags->'wikidata' = muni.wikidata
 	AND muni.EWZ >= 20000
-	AND ST_INTERSECTS(poly.way, bound.way)
+	AND ST_Contains(bound.way, poly.way)
 	AND poly.landuse in ('residential','education','institutional','commercial', 'retail','industrial','brownfield','construction')
 GROUP BY muni.wikidata;
 
@@ -25,15 +25,15 @@ CREATE INDEX simplified_city_landuses_way_idx
   
 -- ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF8 layers/populated/populated.shp PG:"dbname=gis" simplified_city_landuses
 
-CREATE TABLE simplified_city_landuses2 AS
-SELECT
-	ST_Simplify(ST_Buffer(ST_Union(poly.way),25,'quad_segs=4'),50) AS way,
-	muni.wikidata AS wikidata
-FROM
-	planet_osm_polygon AS poly,
-	xxx_municipalities AS muni
-WHERE
-	wikidata_contain_municip(ST_Centroid(poly.way)) = muni.wikidata
-	AND muni.EWZ >= 20000
-	AND poly.landuse in ('residential','education','institutional','commercial', 'retail','industrial','brownfield','construction')
-GROUP BY muni.wikidata;
+-- CREATE TABLE simplified_city_landuses2 AS
+-- SELECT
+-- 	ST_Simplify(ST_Buffer(ST_Union(poly.way),25,'quad_segs=4'),50) AS way,
+-- 	muni.wikidata AS wikidata
+-- FROM
+-- 	planet_osm_polygon AS poly,
+-- 	xxx_municipalities AS muni
+-- WHERE
+-- 	wikidata_contain_municip(ST_Centroid(poly.way)) = muni.wikidata
+-- 	AND muni.EWZ >= 20000
+-- 	AND poly.landuse in ('residential','education','institutional','commercial', 'retail','industrial','brownfield','construction')
+-- GROUP BY muni.wikidata;

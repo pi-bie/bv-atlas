@@ -87,6 +87,18 @@
 @place-label-medium-z9: 40;
 @place-label-small-z9: 32;
 
+@place-pop-huge-z12: 125000;
+@place-label-huge-z12: 52;
+@place-pop-large-z12: 50000;
+@place-label-large-z12: 44;
+@place-pop-medium-z12: 25000; //also the point where nodes are replaced by shaded are in Germany-scale
+@place-label-medium-z12: 35;
+@place-pop-small-z12: 15000; //also the threshold for the node size
+@place-label-small-z12: 31;
+@place-pop-smaller-z12: 10000;
+@place-label-smaller-z12: 27;
+@place-label-tiny-z12: 21;
+
 @river-line-z8: 4;
 @river-label-z8: 16;
 @river-line-z9: 8;
@@ -295,5 +307,4 @@ Map {
     line-dasharray: 1, 2;
   }
 }
-
 

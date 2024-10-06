@@ -6,7 +6,8 @@ echo "using database: $1"
 
 #wget 
 # remove URL part of wikidata 
-sed -i -e 's~http://www.wikidata.org/entity/~~g' data/query.csv 
+sed -i -e 's~http://www.wikidata.org/entity/~~g' data/urban.csv
+sed -i -e 's~http://www.wikidata.org/entity/~~g' data/non-urban.csv
 
 psql -f municipalities.sql -d $1
 
