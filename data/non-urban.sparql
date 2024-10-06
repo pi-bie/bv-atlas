@@ -1,0 +1,6 @@
+SELECT ?item ?itemLabel ?Einwohnerzahl ?geographische_Koordinaten WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],de,mul,en". }
+  ?item wdt:P31 wd:Q116457956.
+  OPTIONAL { ?item wdt:P1082 ?Einwohnerzahl. }
+  OPTIONAL { ?item wdt:P625 ?geographische_Koordinaten. }
+}
