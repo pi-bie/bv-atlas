@@ -61,7 +61,7 @@
         "type": "postgis",
         "table": "(SELECT\n    way\n  FROM simplified_water_polygons\n) AS ocean_lz",
         "key_field": "",
-        "geometry_field": "",
+        "geometry_field": "way",
         "extent_cache": "auto",
         "extent": "-20037508.34,-14776649.535690924,20037508.34,20037508.34",
         "dbname": "gis",
@@ -90,7 +90,7 @@
         "type": "postgis",
         "table": "(select way,waterway,name,\n            case when tunnel in ('yes','true','1','culvert') then 'yes'::text else tunnel end as tunnel,\ntags->'width' as width\n            from planet_osm_line\n            where waterway in ('river','canal')\n                and (bridge is null or bridge not in ('yes','true','1','aqueduct'))\n                and (tags->'abandoned' is null or tags->'abandoned' <> 'yes')\n            order by z_order\n            ) as water_lines",
         "key_field": "",
-        "geometry_field": "",
+        "geometry_field": "way",
         "extent_cache": "auto",
         "extent": "-449602.7587862602,6611139.675470055,1340202.5895396175,8982220.323750606",
         "dbname": "gis",
@@ -119,7 +119,7 @@
         "type": "postgis",
         "table": "(SELECT\n    way\n  FROM water_polygons\n) AS ocean",
         "key_field": "",
-        "geometry_field": "",
+        "geometry_field": "way",
         "extent_cache": "auto",
         "extent": "-20037508.34,-14776649.535690924,20037508.34,20037508.34",
         "dbname": "gis",
@@ -250,7 +250,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way,highway,tags->'scenic' AS scenic,ref,(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline\nFROM planet_osm_line WHERE highway='tertiary' OR (highway='unclassified' AND (access='yes' OR access IS null) AND (ref IS NOT null OR Substring(tags->'maxspeed','\\d+')::integer >=50)) ORDER BY ref DESC) as paths",
+        "table": "(SELECT way,highway,tags->'scenic' AS scenic,ref,(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline\nFROM planet_osm_line WHERE highway='tertiary' OR (highway='unclassified' AND (access='yes' OR access IS null) AND ref IS NOT null) ORDER BY ref DESC) as paths",
         "key_field": "",
         "geometry_field": "way",
         "extent_cache": "auto",
@@ -467,7 +467,7 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way,highway,railway,tags->'usage' AS usage,(CASE WHEN (railway IS NOT NULL) THEN (CASE WHEN (tunnel='yes' AND (COALESCE(name,tags->'tunnel:name') IS NOT NULL OR tags->'tunnel:length' IS NOT NULL)) THEN 'yes' WHEN (tunnel='yes') THEN 'maybe' END) ELSE tunnel END) AS tunnel,(CASE WHEN (tunnel='yes') THEN (SELECT COUNT(*) from planet_osm_roads foo where foo.highway=bar.highway AND ST_Covers(foo.way,ST_StartPoint(bar.way)) AND foo.osm_id != bar.osm_id AND tunnel='yes') ELSE null END ) AS prevTunnels,(CASE WHEN (tunnel='yes') THEN (SELECT COUNT(*) from planet_osm_roads foo where foo.highway=bar.highway AND ST_Covers(foo.way,ST_EndPoint(bar.way)) AND foo.osm_id != bar.osm_id AND tunnel='yes') ELSE null END ) AS nextTunnels,tags->'scenic' AS scenic,ref,SUBSTRING(ref, 1, 1) as reftype,substring(ref,'\\d+') as refnumber,\n(CASE WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1 ELSE Char_Length(Substring(ref,'\\d+')) END) AS lref,\n(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline,\n(CASE\n  WHEN (highway='motorway_link') THEN 45\n  WHEN (highway='motorway' AND tunnel='yes') THEN -5\n  WHEN (highway='motorway') THEN 35\n  WHEN (highway='trunk' AND tunnel='yes') THEN -10\n  WHEN (highway='trunk') THEN 25\n  WHEN (highway='primary' AND tunnel='yes') THEN -15\n  WHEN (highway='primary') THEN 15\n  WHEN (highway='secondary' AND tunnel='yes') THEN -20\n  WHEN (highway='secondary') THEN 5\n  WHEN (railway is not null) THEN 31\nEND) as layerorder\nfrom planet_osm_roads bar WHERE highway IN ('motorway','motorway_link','trunk','primary','secondary') OR (railway IN ('rail', 'narrow_gauge') AND service IS null AND (tags->'usage' NOT IN ('military','industrial','tourism','test') OR tags->'usage' IS null))\nORDER BY layerorder ASC) as paths",
+        "table": "(SELECT way,highway,railway,tags->'usage' AS usage,(CASE WHEN (railway IS NOT NULL) THEN (CASE WHEN (tunnel='yes' AND (COALESCE(name,tags->'tunnel:name') IS NOT NULL OR tags->'tunnel:length' IS NOT NULL)) THEN 'yes' WHEN (tunnel='yes') THEN 'maybe' END) ELSE tunnel END) AS tunnel,(CASE WHEN (tunnel='yes') THEN (SELECT COUNT(*) from planet_osm_roads foo where foo.highway=bar.highway AND ST_Covers(foo.way,ST_StartPoint(bar.way)) AND foo.osm_id != bar.osm_id AND tunnel='yes') ELSE null END ) AS prevTunnels,(CASE WHEN (tunnel='yes') THEN (SELECT COUNT(*) from planet_osm_roads foo where foo.highway=bar.highway AND ST_Covers(foo.way,ST_EndPoint(bar.way)) AND foo.osm_id != bar.osm_id AND tunnel='yes') ELSE null END ) AS nextTunnels,tags->'scenic' AS scenic,ref,SUBSTRING(ref, 1, 1) as reftype,substring(ref,'\\d+') as refnumber,\n(CASE WHEN (tags->'major_throughfare' IS NOT NULL) THEN 1 ELSE Char_Length(Substring(ref,'\\d+')) END) AS lref,\n(CASE\nWHEN (tags->'incline'='up') THEN 2\nWHEN (tags->'incline'='down') THEN -2\nELSE (SUBSTRING(tags->'incline','[-]?\\d+'))::integer\nEND) as incline,\n(CASE\n  WHEN (highway='motorway_link') THEN 45\n  WHEN (highway='motorway' AND tunnel='yes') THEN -5\n  WHEN (highway='motorway') THEN 35\n  WHEN (highway='trunk' AND tunnel='yes') THEN -10\n  WHEN (highway='trunk') THEN 25\n  WHEN (highway='primary' AND tunnel='yes') THEN -15\n  WHEN (highway='primary') THEN 15\n  WHEN (highway='secondary' AND tunnel='yes') THEN -20\n  WHEN (highway='secondary') THEN 5\n  WHEN (railway is not null) THEN 31\nEND) as layerorder\nfrom planet_osm_roads bar WHERE highway IN ('motorway','motorway_link','trunk','primary','secondary') OR (railway IN ('rail', 'narrow_gauge') AND service IS null AND (tags->'gauge' IS null OR Substring(tags->'gauge','\\d+')::integer > 600) AND (tags->'usage' NOT IN ('military','industrial','tourism','test') OR tags->'usage' IS null))\nORDER BY layerorder ASC) as paths",
         "key_field": "",
         "geometry_field": "way",
         "extent_cache": "auto",
@@ -699,36 +699,6 @@
     {
       "geometry": "point",
       "extent": [
-        -4.0388503,
-        50.921290199263275,
-        11.8515341,
-        62.51465530131363
-      ],
-      "Datasource": {
-        "type": "postgis",
-        "table": "(SELECT way,place,name,\n(CASE\n                    WHEN (tags->'population' ~ '^[0-9]{1,8}$') THEN (tags->'population')::INTEGER\n                    WHEN (place = 'city') THEN 100000\n                    WHEN (place = 'town') THEN 1000\n                    WHEN (place = 'village') THEN 100\n                    ELSE 1\n                  END) as population,round(ascii(md5(osm_id::text)) / 55) AS dir,\nST_INTERSECTS(way,\n(SELECT ST_UNION(way) FROM planet_osm_polygon\n\tWHERE boundary='administrative' AND \n\t\t(admin_level::integer>=8 or tags->'admin_title'='independent town') AND \n\t\t( (CASE\n\t\t\tWHEN (tags->'population' ~ '^[0-9]{1,8}$') THEN (tags->'population')::INTEGER\n\t\t\tELSE 0 \n\t\t  END) >=20000 OR place='city')\n\t\t   ) ) AS incity from planet_osm_point\nWHERE place in ('city','town','village','hamlet', 'suburb','quarter')) as node",
-        "key_field": "",
-        "geometry_field": "",
-        "extent_cache": "auto",
-        "extent": "-449602.7587862602,6607382.6621970795,1319306.7411311178,8982220.323750606",
-        "dbname": "gis",
-        "port": "5432",
-        "user": "renderaccount",
-        "id": "places",
-        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
-      },
-      "id": "places_clone_2478",
-      "class": "places",
-      "srs-name": "900913",
-      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
-      "advanced": {},
-      "name": "places_clone_2478",
-      "layerId": "places_clone_2478",
-      "status": "off"
-    },
-    {
-      "geometry": "point",
-      "extent": [
         1.4042559999999997,
         50.9425607992595,
         11.8153741,
@@ -868,18 +838,46 @@
     {
       "geometry": "polygon",
       "extent": [
-        1.4042559999999997,
-        50.9425607992595,
-        11.8153741,
-        59.20667170135131
+        -4.0388503,
+        50.921290199263275,
+        11.8515341,
+        62.51465530131363
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT way,COALESCE(place,\"natural\") AS feature,COALESCE(tags->'name:de',name) AS name,0 AS width FROM planet_osm_polygon WHERE (\"natural\" IN ('bay') AND way_area > 1e+07) OR place IN ('ocean','sea')) as area",
+        "table": "(select way,name,\"natural\",way_area,COALESCE(way_area/NULLIF(POW(!scale_denominator!*0.001*0.28,2),0), 0) AS way_pixels from planet_osm_polygon WHERE place  = 'island' AND name IS NOT null  AND way_area > 5e06 ) as area",
         "key_field": "",
         "geometry_field": "",
         "extent_cache": "auto",
-        "extent": "156321.06286339916,6611139.675470055,1315281.428344033,8225191.288640352",
+        "extent": "-449602.7587862602,6607382.6621970795,1319306.7411311178,8982220.323750606",
+        "dbname": "gis",
+        "port": "5432",
+        "id": "islands",
+        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+      },
+      "id": "islands",
+      "class": "",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "islands",
+      "layerId": "islands"
+    },
+    {
+      "geometry": "polygon",
+      "extent": [
+        -4.0388503,
+        50.921290199263275,
+        11.8515341,
+        62.51465530131363
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT way,COALESCE(place,(CASE WHEN (\"natural\"='wetland') THEN 'wetland_' || (CASE WHEN tags->'wetland' IS NOT null THEN tags->'wetland' END) ELSE \"natural\" END)) AS feature,COALESCE(tags->'name:de',name) AS name,way_area AS width FROM planet_osm_polygon WHERE name IS NOT null AND (((\"natural\" IN ('bay') OR (\"natural\" = 'wetland' AND tags->'wetland' = 'tidalflat')) AND way_area > 1e+07) OR place IN ('ocean','sea')) ORDER BY way_area DESC) as area",
+        "key_field": "",
+        "geometry_field": "way",
+        "extent_cache": "auto",
+        "extent": "-449602.7587862602,6607382.6621970795,1319306.7411311178,8982220.323750606",
         "dbname": "gis",
         "port": "5432",
         "id": "sea_name_polygon",
@@ -938,7 +936,6 @@
         "extent": "-449602.7587862602,6607382.6621970795,1319306.7411311178,8982220.323750606",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
         "id": "water_areas_name",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
@@ -989,24 +986,23 @@
       ],
       "Datasource": {
         "type": "postgis",
-        "table": "(SELECT ST_LineSubstring(ST_LongestLine(way, way),0.1,0.9) AS way,name,coalesce(\"natural\",tags->'region:type') AS natural from planet_osm_polygon where name IS NOT NULL AND (\"natural\"='mountain_range' OR (place='region' AND tags->'region:type' is not null))) as _subquery",
+        "table": "(SELECT ST_LineSubstring(ST_LongestLine(way, way),0.15,0.85) AS way,name,Coalesce(\"natural\",tags->'region:type',landuse) AS feature, tags->'wetland' AS wetland,way_area FROM planet_osm_polygon WHERE name IS NOT null AND (\"natural\"='mountain_range' OR (\"natural\"='wetland' AND tags->'wetland' in ('bog','fen') AND way_area > 1.5e07) OR (place='region' AND tags->'region:type' is not null) OR (landuse = 'forest' AND way_area > 1.5e07 ) ) ORDER BY way_area) as paths",
         "key_field": "",
-        "geometry_field": "",
+        "geometry_field": "way",
         "extent_cache": "auto",
         "extent": "-449602.7587862602,6607382.6621970795,1319306.7411311178,8982220.323750606",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
-        "id": "mountains-landscapes",
+        "id": "mountains-forests-regions",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
-      "id": "mountains-landscapes",
+      "id": "mountains-forests-regions",
       "class": "names",
       "srs-name": "900913",
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
-      "name": "mountains-landscapes",
-      "layerId": "mountains-landscapes"
+      "name": "mountains-forests-regions",
+      "layerId": "mountains-forests-regions"
     },
     {
       "geometry": "linestring",
@@ -1025,17 +1021,16 @@
         "extent": "-449602.7587862602,6611139.675470055,1340202.5895396175,8982220.323750606",
         "dbname": "gis",
         "port": "5432",
-        "user": "renderaccount",
-        "id": "long_ridges",
+        "id": "long-ridges",
         "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
       },
-      "id": "long_ridges",
+      "id": "long-ridges",
       "class": "names",
       "srs-name": "900913",
       "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
       "advanced": {},
-      "name": "long_ridges",
-      "layerId": "long_ridges"
+      "name": "long-ridges",
+      "layerId": "long-ridges"
     },
     {
       "geometry": "linestring",
@@ -1068,7 +1063,7 @@
       "properties": {
         "minzoom": 11
       }
-    }
+    },
   ],
   "scale": 1,
   "metatile": 2,

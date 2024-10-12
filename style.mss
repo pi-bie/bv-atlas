@@ -99,6 +99,20 @@
 @place-label-smaller-z12: 27;
 @place-label-tiny-z12: 21;
 
+@island-label-large-z8: 24;
+@island-label-medium-z8: 20;
+@island-label-small-z8: 14;
+
+@island-label-large-z9: 2*@island-label-large-z8;
+@island-label-medium-z9: 2*@island-label-medium-z8;
+@island-label-small-z9: 2*@island-label-small-z8;
+
+@island-label-large-z12: @place-label-huge-z12;
+@island-label-medium-z12: @place-label-large-z12;
+@island-label-small-z12: @place-label-medium-z12;
+@island-label-smaller-z12: @place-label-small-z12;
+@island-label-z12: @island-label-medium-z12;
+
 @river-line-z8: 4;
 @river-label-z8: 16;
 @river-line-z9: 8;
@@ -124,6 +138,16 @@
 @campsite-marker-z12: 28;
 @services-height-z12: 34;
 @services-label-z12: 0.85* @exitname-size-z12;
+
+@font-sans: 'Helvetica Neue Medium', 'Noto Sans Regular', "DejaVu Sans Book";
+@font-sans-bold: 'Helvetica Neue Bold', 'Noto Sans Bold', "DejaVu Sans Bold";
+@font-sans-italic: 'Helvetica Neue Italic', 'Noto Sans Italic', "DejaVu Sans Oblique";
+@font-sans-bold-italic: 'Helvetica Neue Bold Italic', 'Noto Sans Bold Italic', "DejaVu Sans Bold Oblique";
+@font-sans-light: 'Helvetica Neue Light', 'Noto Sans Light', "DejaVu Sans Condensed";
+@font-sans-thin: 'Helvetica Neue Thin', 'Noto Sans Thin', "DejaVu Sans ExtraLight";
+@font-serif: 'Noto Serif Regular', "DejaVu Serif Book";
+@font-serif-light: 'Noto Serif Light', "DejaVu Serif Condensed";
+@font-serif-thin: 'Noto Serif Thin', "DejaVu Serif Condensed";
 
 @standard-halo-radius: 1;
 @standard-halo-fill: rgba(255,255,255,0.6);
@@ -250,15 +274,88 @@ Map {
 }
 */
 
+#islands { [way_area>2e07],[way_pixels>3000] {
+  text-name: [name];
+  text-face-name: @font-serif;
+  text-fill: black;
+  text-placement: vertex;
+  text-repeat-distance: 512;
+  //text-spacing: 100;
+  text-placement-type: simple;
+  text-placements: "N,S,E,W";
+  text-halo-radius: @standard-halo-radius;
+  text-halo-fill: @standard-halo-fill;
+  [zoom<=7] {
+    text-size: 0.5*@island-label-small-z8;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>=1e08] { text-size: 0.5*@island-label-medium-z8; }
+      [way_area>1e09] { text-size: 0.5*@island-label-large-z8; }
+    }
+    text-dx: 0.5*@island-label-small-z8;
+    text-dy: 0.5*@island-label-small-z8;
+  }
+  [zoom=8] {
+    text-size: 1*@island-label-small-z8;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>=1e08] { text-size: 1*@island-label-medium-z8; }
+      [way_area>1e09] { text-size: 1*@island-label-large-z8; }
+    }
+    text-dx: 1*@island-label-small-z8;
+    text-dy: 1*@island-label-small-z8;
+  }
+  [zoom=9] {
+    text-size: 1*@island-label-small-z9;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>=1e08] { text-size: 1*@island-label-medium-z9; }
+      [way_area>1e09] { text-size: 1*@island-label-large-z9; }
+    }
+    text-dx: 1*@island-label-small-z9;
+    text-dy: 1*@island-label-small-z9;
+  }
+  [zoom=10] {
+    text-size: 0.25*@island-label-smaller-z12;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>1e06] {text-size: 0.25*@island-label-small-z12; }
+      [way_area>2e07] { text-size: 0.25*@island-label-medium-z12; }
+      [way_area>1e08] { text-size: 0.25*@island-label-large-z12; }
+    }
+    text-dx: 0.25*@island-label-z12;
+    text-dy: 0.25*@island-label-z12;
+  }
+  [zoom=11] {
+    text-size: 0.5*@island-label-smaller-z12;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>1e06] {text-size: 0.5*@island-label-small-z12; }
+      [way_area>2e07] { text-size: 0.5*@island-label-medium-z12; }
+      [way_area>1e08] { text-size: 0.5*@island-label-large-z12; }
+    }
+    text-dx: 0.5*@island-label-z12;
+    text-dy: 0.5*@island-label-z12;
+  }
+  [zoom>=12] {
+    text-size: 1*@island-label-smaller-z12;
+    [natural!='sand'][natural!='shoal'] {
+      [way_area>1e06] {text-size: 1*@island-label-small-z12; }
+      [way_area>2e07] { text-size: 1*@island-label-medium-z12; }
+      [way_area>1e08] { text-size: 1*@island-label-large-z12; }
+    }
+    text-dx: 1*@island-label-z12;
+    text-dy: 1*@island-label-z12;
+  }
+} }
+
 .water_names { [feature='ocean'],[feature='sea'],[zoom>=9][feature='bay'],[zoom>=10][feature='water'][width>=2500000],
   [zoom>=9][feature='water'][width>=10000000],
+  [zoom>=10][feature='wetland_tidalflat'][width>=1e08],
+  [zoom>=11][feature='wetland_tidalflat'][width>=5e07],
+  [zoom>=12][feature='wetland_tidalflat'][width>=1e07],
   [zoom>=11][feature='water'],
   [zoom>=10][feature='river'], [feature='river'][width>=5],
   [zoom>=10][feature='canal'], [feature='canal'][width>=5] 
   {
     text-name: [name];
     text-fill: @wasser-kontur;
-    text-face-name: 'Helvetica Neue Italic';
+    text-face-name: @font-sans-italic;
     text-halo-fill: @standard-halo-fill;
     text-halo-radius: @standard-halo-radius;
     text-wrap-character: " ";
@@ -273,7 +370,8 @@ Map {
     [feature='water'] {
       text-placement: point;
     }
-    [feature='strait'],[feature='ocean'],[feature='sea'],[feature='bay'] {
+    [feature='strait'],[feature='ocean'],[feature='sea'],[feature='bay'],[feature='wetland_tidalflat'] {
+      text-face-name: @font-sans;
       [zoom<=7] {text-size: 0.25*@bay-label-z9; }
       [zoom=8] {text-size: 0.5*@bay-label-z9; }
       [zoom=9] {text-size: 1*@bay-label-z9; }
@@ -290,6 +388,13 @@ Map {
       [zoom=8] {text-size: 0.5*@sea-label-z9; }
       [zoom=9] {text-size: 1*@sea-label-z9; }
     }
+    [feature='wetland_tidalflat'] {
+      text-placement: interior;
+      [zoom=10] { text-size: 0.75*12; }
+      [zoom=11] {text-size: 0.75*22; }
+      [zoom>=12] {text-size: 0.75*42; }
+    }
+    [feature='ocean'] { text-transform: uppercase; }
     [feature='river'],[feature='canal'] {
       text-repeat-distance: 256;
       text-placement: line;

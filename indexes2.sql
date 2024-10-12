@@ -21,3 +21,7 @@ CREATE INDEX planet_osm_polygon_nparks
   WHERE ((boundary='national_park' AND tags->'protect_class'='2')
   OR (boundary = 'protected_area' AND tags->'protection_title'='Naturpark')
   AND building IS NULL);
+
+CREATE INDEX planet_osm_polygon_islands
+  ON planet_osm_polygon USING GIST (way)s
+  WHERE place = 'island' AND name IS NOT null;

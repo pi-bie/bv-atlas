@@ -31,7 +31,7 @@
 #protected-areas_name [zoom>=10] {
   label/text-name: [name];
   label/text-size: 8.25;
-  label/text-face-name: 'Helvetica Neue Bold';
+  label/text-face-name: @font-sans-bold;
   label/text-fill: @nsg;
   [zoom=11] { label/text-size: 17.5; }
   [zoom>=12] { label/text-size: 35; }
@@ -52,32 +52,36 @@
     polygon-gamma: 0.9;
 } }
 
-#mountains-landscapes [zoom>=10][name != null] {
+#mountains-forests-regions [zoom>=10][name != null] {
   text-name: [name];
-  text-face-name: 'Helvetica Neue Light';
+  text-face-name: @font-serif-light;
+  [feature='forest'],[feature='wetland'] { text-face-name: @font-serif-thin; }
+  [feature='mountain_range'] { text-face-name: @font-serif-light; }
+  [way_area > 1e09] { text-face-name: @font-serif; }
   text-fill: black;
   text-placement: line;
+  //[feature='forest'] { text-placement: interior; }
   text-size: 0.25*@mountain-ridge-label-z12;
   text-horizontal-alignment: adjust;
   //text-character-spacing: @mountain-ridge-char-spacing-z12;
   text-wrap-width: 96;
-  text-line-spacing: 2*0.25*@mountain-ridge-label-z12;
+  [feature!='forest'][feature!='wetland'] { text-line-spacing: 2*0.25*@mountain-ridge-label-z12; }
   text-margin: 0;
   text-min-path-length: 0;
   text-allow-overlap: true;
   [zoom=11] {
     text-size: 0.5*@mountain-ridge-label-z12;
-    text-line-spacing: 2*0.5*@mountain-ridge-label-z12;
+    [feature!='forest'] { text-line-spacing: 2*0.5*@mountain-ridge-label-z12; }
   }
   [zoom>=12] {
     text-size: 1*@mountain-ridge-label-z12;
-    text-line-spacing: 2*1*@mountain-ridge-label-z12;
+    [feature!='forest'] { text-line-spacing: 2*1*@mountain-ridge-label-z12; }
   }
 }
 
-#long_ridges [zoom>=10] {
+#long-ridges [zoom>=10] {
   text-name: [name];
-  text-face-name: 'Helvetica Neue Thin';
+  text-face-name: @font-serif-light;
   text-fill: black;
   text-placement: line;
   text-size: 0.8*0.25*@mountain-ridge-label-z12;
