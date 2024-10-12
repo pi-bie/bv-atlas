@@ -28,10 +28,12 @@
   }
   [zoom>=12]::label {
     text-name: [name];
-    text-face-name: 'Helvetica Neue Medium';
+    text-face-name: @font-sans-italic;
+    text-size: @tourism-label-z12;
     text-placement: line;
+    text-repeat-distance: 384;
     text-simplify: 40;
-    text-dy: -1*(@scenic-offset-z12+0.5*@secondary-width-z12);
+    text-dy: -1*(@scenic-offset-z12+@scenic-width-z12+0.5*@secondary-width-z12);
   }
   comp-op: darken;
 }
